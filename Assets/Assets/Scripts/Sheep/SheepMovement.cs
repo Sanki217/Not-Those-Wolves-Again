@@ -22,6 +22,7 @@ public class SheepMovement : MonoBehaviour
 
     [Header("Bark Response")]
     public float barkCooldown = 5f;      // Time sheep cannot wander after being barked at
+    public float minBarkForce = 1f;      // Minimum force that can be applied when barked at
 
     private Rigidbody rb;
     private float lastBarkedTime;        // Last time the sheep was barked at
@@ -55,10 +56,21 @@ public class SheepMovement : MonoBehaviour
 
         // Stop wandering if barked at
         StopCoroutine(WanderCoroutine());
-        rb.velocity = barkForce; // Apply the bark force directly
+        rb.velocity = Vector3.zero; // Reset velocity before applying new force
+        rb.AddForce(barkForce, ForceMode.Impulse); // Apply the bark force directly
         lastBarkedTime = Time.time; // Record the time the bark occurred
         currentState = SheepState.Running; // Set state to running
         isWandering = false; // Stop wandering
+
+        // Ensure the force is always enough to move the sheep
+        if (barkForce.magnitude < minBarkForce)
+        {
+            Vector3 adjustedForce = barkForce.normalized * minBarkForce;
+            rb.AddForce(adjustedForce, ForceMode.Impulse);
+        }
+
+        // Restart the wandering after cooldown
+        StartCoroutine(ResumeWanderingAfterCooldown());
     }
 
     // Coroutine to manage wandering behavior
@@ -104,6 +116,17 @@ public class SheepMovement : MonoBehaviour
                 float waitTime = Random.Range(minMoveInterval, maxMoveInterval);
                 yield return new WaitForSeconds(waitTime);
             }
+        }
+    }
+
+    // Coroutine to resume wandering after the bark cooldown
+    private IEnumerator ResumeWanderingAfterCooldown()
+    {
+        yield return new WaitForSeconds(barkCooldown);
+        if (currentState == SheepState.Running)
+        {
+            currentState = SheepState.Idle; // Reset to Idle state after cooldown
+            StartCoroutine(WanderCoroutine()); // Resume wandering
         }
     }
 }

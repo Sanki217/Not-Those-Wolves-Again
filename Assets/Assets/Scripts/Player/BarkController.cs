@@ -9,15 +9,7 @@ public class BarkController : MonoBehaviour
     public float maxBarkForce = 10f;     // Maximum force applied to sheep when barking
     public float minBarkForce = 2f;      // Minimum force applied to sheep, even if they're far away
 
-    private void Start()
-    {
-        // Ensure BarkController is working and attached to the dog
-        if (!GetComponent<Rigidbody>())
-        {
-            Debug.LogError("BarkController should be attached to a GameObject with a Rigidbody!");
-        }
-    }
-
+    
     public void Bark()
     {
         Debug.Log("Woof! The dog barked!");

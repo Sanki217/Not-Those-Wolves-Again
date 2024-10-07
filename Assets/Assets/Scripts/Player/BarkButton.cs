@@ -17,9 +17,19 @@ public class BarkButton : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown("space"))
+        {
+            barkController.Bark();
+        }
+    }
+
+
     public void OnBarkButtonClicked()
     {
         // Call the Bark method from the BarkController script
         barkController.Bark();
     }
+
 }
