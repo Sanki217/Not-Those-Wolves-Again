@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class SheepMovement : MonoBehaviour
 {
-    // Enum to represent different states of the sheep
     private enum SheepState
     {
         Idle,       // Wandering or standing still
@@ -11,6 +10,8 @@ public class SheepMovement : MonoBehaviour
     }
 
     private SheepState currentState = SheepState.Idle; // Initial state is Idle
+    private bool isInSafeZone = false; // Whether the sheep is inside the safe zone
+    private Bounds safeZoneBounds;  // Bounds of the safe zone
 
     [Header("Wandering Settings")]
     public float minMoveDistance = 1f;   // Minimum wandering distance
@@ -31,7 +32,10 @@ public class SheepMovement : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        StartCoroutine(WanderCoroutine()); // Start wandering as soon as the game starts
+
+        // Start wandering with a random initial delay
+        float randomInitialDelay = Random.Range(0f, maxMoveInterval);
+        StartCoroutine(StartWanderingAfterDelay(randomInitialDelay));
     }
 
     private void Update()
@@ -52,6 +56,7 @@ public class SheepMovement : MonoBehaviour
     // Method to handle bark response
     public void OnBarkedAt(Vector3 barkForce)
     {
+        if (isInSafeZone) return; // Ignore barking if the sheep is in the safe zone
         if (currentState == SheepState.Running) return; // If already running, ignore further bark calls
 
         // Stop wandering if barked at
@@ -71,6 +76,28 @@ public class SheepMovement : MonoBehaviour
 
         // Restart the wandering after cooldown
         StartCoroutine(ResumeWanderingAfterCooldown());
+    }
+
+    // Method to set the sheep's safe zone status and bounds
+    public void SetInSafeZone(bool inZone, Bounds bounds)
+    {
+        isInSafeZone = inZone;
+        if (isInSafeZone)
+        {
+            safeZoneBounds = bounds;  // Store the bounds of the safe zone
+        }
+    }
+
+    public bool IsInSafeZone()
+    {
+        return isInSafeZone;
+    }
+
+    // Coroutine to start wandering after an initial random delay
+    private IEnumerator StartWanderingAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay); // Wait for the random initial delay
+        StartCoroutine(WanderCoroutine()); // Start the actual wandering behavior
     }
 
     // Coroutine to manage wandering behavior
@@ -96,7 +123,15 @@ public class SheepMovement : MonoBehaviour
                 float randomSpeed = Random.Range(minSpeed, maxSpeed);
 
                 // Move the sheep based on the calculated direction, distance, and speed
-                Vector3 targetVelocity = randomDirection * randomSpeed;
+                Vector3 targetPosition = transform.position + randomDirection * randomDistance;
+
+                // Restrict movement to within the bounds of the safe zone if sheep is inside
+                if (isInSafeZone)
+                {
+                    targetPosition = RestrictToBounds(targetPosition, safeZoneBounds);
+                }
+
+                Vector3 targetVelocity = (targetPosition - transform.position).normalized * randomSpeed;
                 float moveTime = randomDistance / randomSpeed;
 
                 float elapsedTime = 0f;
@@ -119,11 +154,21 @@ public class SheepMovement : MonoBehaviour
         }
     }
 
+    // Restrict the wandering position to stay within the bounds of the safe zone
+    private Vector3 RestrictToBounds(Vector3 targetPosition, Bounds bounds)
+    {
+        return new Vector3(
+            Mathf.Clamp(targetPosition.x, bounds.min.x, bounds.max.x),
+            transform.position.y, // Keep the same Y position
+            Mathf.Clamp(targetPosition.z, bounds.min.z, bounds.max.z)
+        );
+    }
+
     // Coroutine to resume wandering after the bark cooldown
     private IEnumerator ResumeWanderingAfterCooldown()
     {
         yield return new WaitForSeconds(barkCooldown);
-        if (currentState == SheepState.Running)
+        if (currentState == SheepState.Running && !isInSafeZone)
         {
             currentState = SheepState.Idle; // Reset to Idle state after cooldown
             StartCoroutine(WanderCoroutine()); // Resume wandering
