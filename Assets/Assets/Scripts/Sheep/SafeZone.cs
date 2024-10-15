@@ -2,36 +2,30 @@ using UnityEngine;
 
 public class SafeZone : MonoBehaviour
 {
-    public int totalSheepCount;  // Total number of sheep that need to be captured
-    private int capturedSheepCount = 0;  // How many sheep have been captured so far
-
     private BoxCollider safeZoneCollider;  // Reference to the Box Collider of the safe zone
+
+    [SerializeField] private GameManager gameManager;  // Reference to the GameManager
 
     private void Start()
     {
+        // Initialize the BoxCollider of the safe zone
         safeZoneCollider = GetComponent<BoxCollider>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        // Check if the object entering is a sheep and it's not already in the safe zone
         SheepMovement sheep = other.GetComponent<SheepMovement>();
-        if (sheep != null && !sheep.IsInSafeZone())  // Only affect sheep that aren't already in the safe zone
+        if (sheep != null && !sheep.IsInSafeZone())
         {
-            // Stop the sheep from leaving the safe zone
+            // Prevent the sheep from leaving the safe zone by marking it as captured
             sheep.SetInSafeZone(true, safeZoneCollider.bounds);  // Pass the bounds of the safe zone
 
-            // Increment captured sheep counter
-            capturedSheepCount++;
-
-            Debug.Log("Sheep Captured! Total Captured: " + capturedSheepCount);
-
-            // Check if all sheep are captured
-            if (capturedSheepCount >= totalSheepCount)
+            // Check if the sheep has not been destroyed (dead) and then notify the GameManager
+            if (gameManager.IsSheepAlive(sheep.sheepIndex))
             {
-                Debug.Log("All sheep are captured! You win!");
+                gameManager.SheepInSafeZone(sheep.sheepIndex);  // Only call if the sheep is alive
             }
         }
     }
-
-    // Sheep should not leave, so no OnTriggerExit behavior
 }

@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class SheepMovement : MonoBehaviour
 {
+
+    public int sheepIndex;
+
     private enum SheepState
     {
         Idle,       // Wandering or standing still
