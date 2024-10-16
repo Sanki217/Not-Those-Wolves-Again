@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;  // For TextMeshPro
-using UnityEngine.UI;  // For using Image components
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -62,7 +61,7 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < sheep.Length; i++)
         {
-            sheepIcons[i].GetComponent<Image>().sprite = sheepToCollectIcon;
+            sheepIcons[i].GetComponent<UnityEngine.UI.Image>().sprite = sheepToCollectIcon;
         }
     }
 
@@ -76,7 +75,7 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < sheep.Length; i++)
         {
-            if (sheep[i] != null && sheep[i].position.y < -2)
+            if (sheep[i] != null && sheep[i].position.y < -2 && sheepAlive[i])
             {
                 Destroy(sheep[i].gameObject);  // Sheep dies
                 SheepDied(i);  // Call SheepDied when a sheep dies
@@ -93,6 +92,9 @@ public class GameManager : MonoBehaviour
     // Called when a sheep enters the safe zone
     public void SheepInSafeZone(int sheepIndex)
     {
+        if (!sheepAlive[sheepIndex])
+            return;  // Ignore if the sheep is already dead or in the safe zone
+
         sheepInSafeZone++;
         pointsToWin--;
 
@@ -100,7 +102,7 @@ public class GameManager : MonoBehaviour
         sheepAlive[sheepIndex] = false;
 
         // Update the sheep icon to "Sheep Collected"
-        sheepIcons[sheepIndex].GetComponent<Image>().sprite = sheepCollectedIcon;
+        sheepIcons[sheepIndex].GetComponent<UnityEngine.UI.Image>().sprite = sheepCollectedIcon;
 
         // Check if all sheep (collected or dead) are accounted for
         if (sheepInSafeZone + sheepDead >= sheep.Length)
@@ -121,7 +123,7 @@ public class GameManager : MonoBehaviour
         sheepAlive[sheepIndex] = false;
 
         // Update the sheep icon to "Sheep Dead"
-        sheepIcons[sheepIndex].GetComponent<Image>().sprite = sheepDeadIcon;
+        sheepIcons[sheepIndex].GetComponent<UnityEngine.UI.Image>().sprite = sheepDeadIcon;
 
         // Check if all sheep (collected or dead) are accounted for
         if (sheepInSafeZone + sheepDead >= sheep.Length)

@@ -1,13 +1,16 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro; // Import TextMeshPro namespace
+using TMPro;
 
 public class LevelSelector : MonoBehaviour
 {
     [SerializeField] private Material originalMaterial;      // The original material for the cubes
     [SerializeField] private Material selectedMaterial;      // The material applied when a cube is selected
     [SerializeField] private GameObject levelSelectionPopup; // Reference to the level selection confirmation popup
-    [SerializeField] private TextMeshProUGUI popupText;      // Reference to the TextMeshPro component for the popup text
+    [SerializeField] private TextMeshPro popupText;          // Reference to the TextMeshPro component for the popup text
+
+    [SerializeField] private GameObject[] levelCubes;        // Array to hold references to level cubes (Level1Cube, Level2Cube, etc.)
+    [SerializeField] private string[] levelNames;            // Array to hold the scene names (e.g., "Level1", "Level2")
 
     private GameObject selectedLevelCube;  // Reference to the selected level cube
     private string selectedLevelName;      // Stores the name of the selected level (e.g., "Level1", "Level2")
@@ -16,6 +19,7 @@ public class LevelSelector : MonoBehaviour
     private void Start()
     {
         levelSelectionPopup.SetActive(false); // Hide the confirmation popup at the start
+        DisplayHighScores(); // Display the high scores at the start
     }
 
     private void Update()
@@ -40,6 +44,36 @@ public class LevelSelector : MonoBehaviour
         }
     }
 
+    // Display high scores on each level cube (using world-space TextMeshPro)
+    private void DisplayHighScores()
+    {
+        for (int i = 0; i < levelCubes.Length; i++)
+        {
+            GameObject levelCube = levelCubes[i];  // Get the current level cube
+            string levelKey = levelNames[i] + "_HighScore";  // Create the key for the high score in PlayerPrefs
+            int highScore = PlayerPrefs.GetInt(levelKey, 0); // Get the high score, default to 0 if none
+
+            // Find the TextMeshPro component in the associated empty GameObject (on the level cube)
+            Transform highScoreTextTransform = levelCube.transform.Find("HighScoreText");
+            if (highScoreTextTransform != null)
+            {
+                TextMeshPro highScoreText = highScoreTextTransform.GetComponent<TextMeshPro>();
+                if (highScoreText != null)
+                {
+                    highScoreText.text = "High Score: " + highScore;  // Display the high score on the 3D TextMeshPro
+                }
+                else
+                {
+                    Debug.LogError("TextMeshPro component not found on HighScoreText of " + levelCube.name);
+                }
+            }
+            else
+            {
+                Debug.LogError("HighScoreText object not found on " + levelCube.name);
+            }
+        }
+    }
+
     // Method to handle level cube selection
     private void SelectLevelCube(GameObject levelCube)
     {
@@ -54,7 +88,6 @@ public class LevelSelector : MonoBehaviour
         selectedLevelCube.GetComponent<Renderer>().material = selectedMaterial;
 
         // Set the selected level name based on the cube's name
-        // Assume cubes are named "Level1Cube", "Level2Cube", etc.
         selectedLevelName = selectedLevelCube.name.Replace("Cube", ""); // e.g., "Level1", "Level2"
 
         // Find the empty GameObject associated with the cube (centered on the cube)
