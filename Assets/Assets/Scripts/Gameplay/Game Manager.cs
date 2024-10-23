@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     [Header("Game Settings")]
     [SerializeField] private GameObject player;  // Reference to the player
     [SerializeField] private Transform[] sheep;  // Array of all sheep
+    [SerializeField] public float deathZone =-5f;
     private bool[] sheepAlive;  // Track whether each sheep is alive or dead
     private int pointsToWin;  // Sheep needed to win
     private int sheepInSafeZone = 0;  // Sheep captured
@@ -68,14 +69,14 @@ public class GameManager : MonoBehaviour
     // Check if the player or sheep have fallen below Y = -2
     private void CheckFallConditions()
     {
-        if (player.transform.position.y < -2)
+        if (player.transform.position.y < deathZone)
         {
             GameOver();
         }
 
         for (int i = 0; i < sheep.Length; i++)
         {
-            if (sheep[i] != null && sheep[i].position.y < -2 && sheepAlive[i])
+            if (sheep[i] != null && sheep[i].position.y < deathZone && sheepAlive[i])
             {
                 Destroy(sheep[i].gameObject);  // Sheep dies
                 SheepDied(i);  // Call SheepDied when a sheep dies
