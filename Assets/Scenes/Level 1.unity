@@ -424,6 +424,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sheepIndex: 3
+  dogTransform: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
   minMoveDistance: 1
   maxMoveDistance: 3
   minMoveInterval: 1.5
@@ -432,6 +436,8 @@ MonoBehaviour:
   maxSpeed: 3
   barkCooldown: 5
   minBarkForce: 1
+  maxBarkForce: 7
+  verticalBarkForce: 2
 --- !u!54 &95887952
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1056,6 +1062,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sheepIndex: 4
+  dogTransform: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
   minMoveDistance: 1
   maxMoveDistance: 3
   minMoveInterval: 1.5
@@ -1064,6 +1074,8 @@ MonoBehaviour:
   maxSpeed: 3
   barkCooldown: 5
   minBarkForce: 1
+  maxBarkForce: 7
+  verticalBarkForce: 2
 --- !u!54 &304900137
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1345,6 +1357,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sheepIndex: 1
+  dogTransform: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
   minMoveDistance: 1
   maxMoveDistance: 3
   minMoveInterval: 1.5
@@ -1353,6 +1369,8 @@ MonoBehaviour:
   maxSpeed: 3
   barkCooldown: 5
   minBarkForce: 1
+  maxBarkForce: 7
+  verticalBarkForce: 2
 --- !u!54 &362563035
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1985,6 +2003,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 622257728}
   m_CullTransparentMesh: 1
+--- !u!1 &641635180 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e7d6b9c5bef9966478c0c7ce5daff637,
+    type: 3}
+  m_PrefabInstance: {fileID: 1045507096}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &641635184
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 641635180}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 23.276909, y: 16.478352, z: 3.0692887}
+  m_Center: {x: -4.9905267, y: 3.8284795, z: -0.0013580774}
 --- !u!1 &670005392
 GameObject:
   m_ObjectHideFlags: 0
@@ -2532,6 +2577,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sheepIndex: 0
+  dogTransform: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
   minMoveDistance: 1
   maxMoveDistance: 3
   minMoveInterval: 1.5
@@ -2540,6 +2589,8 @@ MonoBehaviour:
   maxSpeed: 3
   barkCooldown: 5
   minBarkForce: 1
+  maxBarkForce: 7
+  verticalBarkForce: 2
 --- !u!54 &834053702
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2949,6 +3000,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sheepIndex: 2
+  dogTransform: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
   minMoveDistance: 1
   maxMoveDistance: 3
   minMoveInterval: 1.5
@@ -2957,6 +3012,8 @@ MonoBehaviour:
   maxSpeed: 3
   barkCooldown: 5
   minBarkForce: 1
+  maxBarkForce: 7
+  verticalBarkForce: 2
 --- !u!54 &981692856
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3307,7 +3364,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e7d6b9c5bef9966478c0c7ce5daff637,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 641635184}
   m_SourcePrefab: {fileID: 100100000, guid: e7d6b9c5bef9966478c0c7ce5daff637, type: 3}
 --- !u!1 &1090209804
 GameObject:
@@ -3950,6 +4011,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenuPanel: {fileID: 2026449412}
   confirmationPopup: {fileID: 674719799}
+  pauseButton: {fileID: 0}
+  points: {fileID: 0}
 --- !u!4 &1159909373
 Transform:
   m_ObjectHideFlags: 0
@@ -4199,6 +4262,7 @@ GameObject:
   - component: {fileID: 1391023761}
   - component: {fileID: 1391023760}
   - component: {fileID: 1391023762}
+  - component: {fileID: 1391023763}
   m_Layer: 0
   m_Name: MusicManager
   m_TagString: Untagged
@@ -4244,6 +4308,102 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 7e00de90c92e9e14ab6e3e09495fdc00, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.8
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &1391023763
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1391023759}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: f976f257656b78445a1da3b2c0467235, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -6184,6 +6344,8 @@ MonoBehaviour:
     m_Bits: 8
   maxBarkForce: 5
   minBarkForce: 2
+  barkDistanceThreshold: 10
+  verticalBarkForce: 2
 --- !u!114 &721364079209600470
 MonoBehaviour:
   m_ObjectHideFlags: 0
