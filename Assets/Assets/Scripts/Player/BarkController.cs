@@ -10,6 +10,7 @@ public class BarkController : MonoBehaviour
     public float minBarkForce = 1f;         // Minimum force applied to sheep, even if they're far away
     public float barkDistanceThreshold = 10f;  // Distance beyond which sheep are unaffected
     public float verticalBarkForce = 2f;    // Vertical force applied to the sheep when barking
+    public AudioSource barkAudio;
 
     // Reference to the Dog's position
     private Transform dogTransform;
@@ -22,6 +23,11 @@ public class BarkController : MonoBehaviour
     public void Bark()
     {
         Debug.Log("Woof! The dog barked!");
+
+        if (barkAudio != null)
+        {
+            barkAudio.Play();
+        }
 
         // Use Physics.OverlapSphere to get all colliders in the bark radius
         Collider[] sheepColliders = Physics.OverlapSphere(transform.position, barkRadius, sheepLayer);

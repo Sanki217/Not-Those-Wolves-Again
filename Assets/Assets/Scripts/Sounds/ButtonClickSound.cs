@@ -7,7 +7,7 @@ public class ButtonClickSound : MonoBehaviour
     public AudioClip clickSound; // Przypisz plik audio w Inspectorze
     private AudioSource audioSource;
 
-    void Start()
+    void Awake()
     {
         audioSource = GetComponent<AudioSource>();
     }
