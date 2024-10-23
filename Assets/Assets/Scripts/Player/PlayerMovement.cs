@@ -7,6 +7,8 @@ public class PlayerMovement : MonoBehaviour
     public float maxSpeed = 5f;
     public float smoothTime = 0.1f; // Smooth acceleration/deceleration
     public DynamicJoystick joystick;
+    public AudioSource footstepsAudio; 
+
 
     private Rigidbody rb;
     private Vector3 currentVelocity;
@@ -40,5 +42,15 @@ public class PlayerMovement : MonoBehaviour
 
         // Smoothly change the velocity using SmoothDamp
         rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref currentVelocity, smoothTime);
+
+        // Odtwarzanie dŸwiêku kroków, gdy pies siê porusza
+        if (targetVelocity.magnitude > 0.1f && !footstepsAudio.isPlaying)
+        {
+            footstepsAudio.Play();
+        }
+        else if (targetVelocity.magnitude <= 0.1f && footstepsAudio.isPlaying)
+        {
+            footstepsAudio.Stop();
+        }
     }
 }
