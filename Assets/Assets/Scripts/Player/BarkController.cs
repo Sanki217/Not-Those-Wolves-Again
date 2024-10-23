@@ -4,12 +4,21 @@ using UnityEngine;
 
 public class BarkController : MonoBehaviour
 {
-    public float barkRadius = 5f;        // Radius within which the sheep will react to the bark
-    public LayerMask sheepLayer;         // Layer to detect sheep
-    public float maxBarkForce = 10f;     // Maximum force applied to sheep when barking
-    public float minBarkForce = 2f;      // Minimum force applied to sheep, even if they're far away
+    public float barkRadius = 10f;          // Radius within which the sheep will react to the bark
+    public LayerMask sheepLayer;            // Layer to detect sheep
+    public float maxBarkForce = 7f;         // Maximum force applied to sheep when barking
+    public float minBarkForce = 1f;         // Minimum force applied to sheep, even if they're far away
+    public float barkDistanceThreshold = 10f;  // Distance beyond which sheep are unaffected
+    public float verticalBarkForce = 2f;    // Vertical force applied to the sheep when barking
 
-    
+    // Reference to the Dog's position
+    private Transform dogTransform;
+
+    private void Start()
+    {
+        dogTransform = transform; // Dog's transform is this object's transform
+    }
+
     public void Bark()
     {
         Debug.Log("Woof! The dog barked!");
@@ -25,28 +34,30 @@ public class BarkController : MonoBehaviour
             if (sheepRigidbody != null && sheepMovement != null)
             {
                 // Calculate the distance between the dog and the sheep
-                float distance = Vector3.Distance(transform.position, collider.transform.position);
+                float distance = Vector3.Distance(dogTransform.position, collider.transform.position);
 
-                // Calculate a force reduction factor based on distance (closer sheep get more force)
-                float forceFactor = 1f - (distance / barkRadius);
+                // If the sheep is farther than the threshold, ignore the barking
+                if (distance > barkDistanceThreshold)
+                {
+                    continue;  // Skip this sheep since it's too far away to be affected
+                }
 
-                // Clamp the force factor to ensure it is within a controlled range
-                forceFactor = Mathf.Clamp(forceFactor, 0.1f, 1f);
-
-                // Calculate the bark force by mixing min and max forces
-                float barkForce = Mathf.Lerp(minBarkForce, maxBarkForce, forceFactor);
+                // Calculate the force reduction factor based on the distance (closer sheep get more force)
+                float distanceFactor = Mathf.Clamp01((barkDistanceThreshold - distance) / barkDistanceThreshold); // Maps distance to a 0-1 range
+                float barkForce = Mathf.Lerp(minBarkForce, maxBarkForce, distanceFactor);
 
                 // Calculate the direction to push the sheep (away from the dog)
-                Vector3 forceDirection = (collider.transform.position - transform.position).normalized;
+                Vector3 forceDirection = (collider.transform.position - dogTransform.position).normalized;
 
-                // Apply force only in the X-Z plane, so sheep don't fly upward
-                forceDirection.y = 0;
+                // Apply both horizontal and vertical force
+                Vector3 barkForceVector = forceDirection * barkForce;
+                barkForceVector.y = verticalBarkForce;  // Add vertical component to launch sheep into the air
 
                 // Apply the calculated force to the sheep's Rigidbody
-                sheepRigidbody.AddForce(forceDirection * barkForce, ForceMode.Impulse);
+                sheepRigidbody.AddForce(barkForceVector, ForceMode.Impulse);
 
                 // Notify the sheep of the bark so it interrupts wandering
-                sheepMovement.OnBarkedAt(forceDirection * barkForce);
+                sheepMovement.OnBarkedAt(barkForceVector);
             }
         }
     }

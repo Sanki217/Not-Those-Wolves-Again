@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class SheepMovement : MonoBehaviour
 {
-
-    public int sheepIndex;
+    public int sheepIndex;  // Index for identifying each sheep
+    public Transform dogTransform;  // Reference to the dog in the scene
+    public LayerMask groundLayer;
 
     private enum SheepState
     {
@@ -27,22 +28,30 @@ public class SheepMovement : MonoBehaviour
     [Header("Bark Response")]
     public float barkCooldown = 5f;      // Time sheep cannot wander after being barked at
     public float minBarkForce = 1f;      // Minimum force that can be applied when barked at
+    public float maxBarkForce = 7f;      // Maximum force applied based on proximity
+    public float verticalBarkForce = 2f; // Vertical force applied when barking
 
     private Rigidbody rb;
     private float lastBarkedTime;        // Last time the sheep was barked at
     private bool isWandering = false;    // Whether the sheep is currently wandering
+    private bool isGrounded = true;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
 
         // Start wandering with a random initial delay
-        float randomInitialDelay = Random.Range(0f, maxMoveInterval);
+        float randomInitialDelay = Random.Range(2f, maxMoveInterval);
         StartCoroutine(StartWanderingAfterDelay(randomInitialDelay));
     }
 
     private void Update()
     {
+
+        DrawLineToDog(); // Draw the line to the dog for visualization
+
+        isGrounded = IsGrounded();
+
         // Rotate the sheep to face the movement direction if it’s moving
         if (rb.velocity.magnitude > 0.1f)
         {
@@ -57,27 +66,19 @@ public class SheepMovement : MonoBehaviour
     }
 
     // Method to handle bark response
-    public void OnBarkedAt(Vector3 barkForce)
+    public void OnBarkedAt(Vector3 barkForceVector)
     {
-        if (isInSafeZone) return; // Ignore barking if the sheep is in the safe zone
-        if (currentState == SheepState.Running) return; // If already running, ignore further bark calls
+        if (isInSafeZone || currentState == SheepState.Running) return; // Ignore barking if the sheep is in the safe zone or already running
 
-        // Stop wandering if barked at
+        // Stop wandering and apply the bark force
         StopCoroutine(WanderCoroutine());
         rb.velocity = Vector3.zero; // Reset velocity before applying new force
-        rb.AddForce(barkForce, ForceMode.Impulse); // Apply the bark force directly
+        rb.AddForce(barkForceVector, ForceMode.Impulse); // Apply the bark force
         lastBarkedTime = Time.time; // Record the time the bark occurred
         currentState = SheepState.Running; // Set state to running
         isWandering = false; // Stop wandering
 
-        // Ensure the force is always enough to move the sheep
-        if (barkForce.magnitude < minBarkForce)
-        {
-            Vector3 adjustedForce = barkForce.normalized * minBarkForce;
-            rb.AddForce(adjustedForce, ForceMode.Impulse);
-        }
-
-        // Restart the wandering after cooldown
+        // Restart wandering after cooldown
         StartCoroutine(ResumeWanderingAfterCooldown());
     }
 
@@ -135,6 +136,8 @@ public class SheepMovement : MonoBehaviour
                 }
 
                 Vector3 targetVelocity = (targetPosition - transform.position).normalized * randomSpeed;
+                targetVelocity.y = rb.velocity.y;
+
                 float moveTime = randomDistance / randomSpeed;
 
                 float elapsedTime = 0f;
@@ -148,7 +151,7 @@ public class SheepMovement : MonoBehaviour
                 }
 
                 // Stop the movement after the time has elapsed
-                rb.velocity = Vector3.zero;
+                rb.velocity = new Vector3(0, rb.velocity.y, 0);
 
                 // Wait for a random interval before the next movement
                 float waitTime = Random.Range(minMoveInterval, maxMoveInterval);
@@ -171,10 +174,43 @@ public class SheepMovement : MonoBehaviour
     private IEnumerator ResumeWanderingAfterCooldown()
     {
         yield return new WaitForSeconds(barkCooldown);
-        if (currentState == SheepState.Running && !isInSafeZone)
+        if (currentState == SheepState.Running && !isInSafeZone && isGrounded)
         {
             currentState = SheepState.Idle; // Reset to Idle state after cooldown
             StartCoroutine(WanderCoroutine()); // Resume wandering
         }
+    }
+
+    private bool IsGrounded()
+    {
+        float groundCheckDistance = 0.1f;  // Distance to check if grounded
+        return Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundLayer);
+    }
+
+    private void DrawLineToDog()
+    {
+        float distanceToDog = Vector3.Distance(transform.position, dogTransform.position);
+        Color lineColor;
+
+        // Set the color of the line based on the distance
+        if (distanceToDog > 6f)
+        {
+            lineColor = Color.red; 
+        }
+        else if (distanceToDog > 4f)
+        {
+            lineColor = Color.yellow; 
+        }
+        else if (distanceToDog > 3f)
+        {
+            lineColor = Color.green;
+        }
+        else
+        {
+            lineColor = Color.blue;
+        }
+
+        // Draw the line from the sheep to the dog
+        Debug.DrawLine(transform.position, dogTransform.position, lineColor);
     }
 }

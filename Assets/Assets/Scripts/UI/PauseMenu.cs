@@ -5,6 +5,8 @@ public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private GameObject pauseMenuPanel;      // Reference to the Pause Menu Panel
     [SerializeField] private GameObject confirmationPopup;   // Reference to the Confirmation Popup Panel
+    [SerializeField] private GameObject pauseButton;         // Reference to the Pause Button
+    [SerializeField] private GameObject points;              // Reference to the Points (sheep icons)
     private bool isPaused = false;                           // Keeps track of whether the game is paused
     private string sceneToLoad;                              // Stores which scene to load (Level Selector or Main Menu)
 
@@ -19,7 +21,9 @@ public class PauseMenu : MonoBehaviour
     public void PauseGame()
     {
         isPaused = true;
+        pauseButton.SetActive(false);  // Hide the pause button
         pauseMenuPanel.SetActive(true); // Show the pause menu
+        points.SetActive(false);        // Hide points during pause
         Time.timeScale = 0f;            // Stop the game by setting timescale to 0
     }
 
@@ -27,8 +31,10 @@ public class PauseMenu : MonoBehaviour
     public void ResumeGame()
     {
         isPaused = false;
+        pauseButton.SetActive(true);  // Show the pause button again
         pauseMenuPanel.SetActive(false); // Hide the pause menu
-        Time.timeScale = 1f;             // Resume the game by setting timescale back to 1
+        points.SetActive(true);        // Show points again
+        Time.timeScale = 1f;           // Resume the game by setting timescale back to 1
     }
 
     // Method to show confirmation popup for Level Selector

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Sheep
   - LevelCube
+  - DeathHole
   layers:
   - Default
   - TransparentFX
@@ -13,7 +14,7 @@ TagManager:
   - Sheep
   - Water
   - UI
-  - 
+  - Ground
   - 
   - 
   - 
