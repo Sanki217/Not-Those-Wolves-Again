@@ -22,11 +22,12 @@ public class BarkController : MonoBehaviour
 
     public void Bark()
     {
-        Debug.Log("Woof! The dog barked!");
+       
 
         if (barkAudio != null)
         {
             barkAudio.Play();
+             Debug.Log("Woof! The dog barked!");
         }
 
         // Use Physics.OverlapSphere to get all colliders in the bark radius
