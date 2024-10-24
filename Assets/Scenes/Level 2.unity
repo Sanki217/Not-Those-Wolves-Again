@@ -1867,9 +1867,6 @@ MonoBehaviour:
   minSpeed: 1
   maxSpeed: 3.05
   barkCooldown: 3
-  minBarkForce: 1
-  maxBarkForce: 5
-  verticalBarkForce: 2
 --- !u!54 &271157103
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5328,9 +5325,6 @@ MonoBehaviour:
   minSpeed: 1
   maxSpeed: 3.05
   barkCooldown: 3
-  minBarkForce: 1
-  maxBarkForce: 5
-  verticalBarkForce: 2
 --- !u!54 &809194781
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5506,9 +5500,6 @@ MonoBehaviour:
   minSpeed: 1
   maxSpeed: 3.05
   barkCooldown: 3
-  minBarkForce: 1
-  maxBarkForce: 5
-  verticalBarkForce: 2
 --- !u!54 &848710702
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9713,10 +9704,10 @@ MonoBehaviour:
   sheepLayer:
     serializedVersion: 2
     m_Bits: 8
-  maxBarkForce: 5
-  minBarkForce: 1
+  maxBarkForce: 8
+  minBarkForce: 2
   barkDistanceThreshold: 6
-  verticalBarkForce: 0
+  verticalBarkForce: 0.2
   barkAudio: {fileID: 1621829390}
 --- !u!114 &1621829384
 MonoBehaviour:
@@ -11278,9 +11269,6 @@ MonoBehaviour:
   minSpeed: 1
   maxSpeed: 3.05
   barkCooldown: 3
-  minBarkForce: 1
-  maxBarkForce: 5
-  verticalBarkForce: 2
 --- !u!54 &1794175935
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -12911,9 +12899,6 @@ MonoBehaviour:
   minSpeed: 1
   maxSpeed: 3.05
   barkCooldown: 3
-  minBarkForce: 1
-  maxBarkForce: 5
-  verticalBarkForce: 2
 --- !u!54 &2131386970
 Rigidbody:
   m_ObjectHideFlags: 0
