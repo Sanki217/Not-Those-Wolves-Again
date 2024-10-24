@@ -9,6 +9,9 @@ public class PlayerMovement : MonoBehaviour
     public DynamicJoystick joystick;
     public AudioSource footstepsAudio; 
 
+            float horizontalInput;
+        float verticalInput;
+
 
     private Rigidbody rb;
     private Vector3 currentVelocity;
@@ -23,9 +26,15 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         // Get the horizontal and vertical input from the joystick
-        float horizontalInput = joystick.Horizontal;
-        float verticalInput = joystick.Vertical;
+         horizontalInput = joystick.Horizontal;
+         verticalInput = joystick.Vertical;
 
+
+
+    }
+    private void FixedUpdate()
+    {
+        
         // Calculate the movement direction (on XZ plane) and normalize it
         Vector3 targetDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
 
@@ -43,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
         // Smoothly change the velocity using SmoothDamp
         rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref currentVelocity, smoothTime);
 
-        // Odtwarzanie dŸwiêku kroków, gdy pies siê porusza
+                // Odtwarzanie dï¿½wiï¿½ku krokï¿½w, gdy pies siï¿½ porusza
         if (targetVelocity.magnitude > 0.1f && !footstepsAudio.isPlaying)
         {
             footstepsAudio.Play();
