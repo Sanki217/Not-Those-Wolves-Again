@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
     // Initialize sheep icons for display
     private void InitializeSheepIcons()
     {
@@ -135,8 +136,10 @@ public class GameManager : MonoBehaviour
         Debug.Log("Sheep died! Total Dead: " + sheepDead);
     }
 
+
+
     // Handle Game Over logic
-    private void GameOver()
+    public void GameOver()
     {
         Debug.Log("Game Over! Player has died.");
         isGameOver = true;

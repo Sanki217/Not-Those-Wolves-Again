@@ -19,7 +19,7 @@ public class Glider : MonoBehaviour
     }
     private void Update()
     {
-        if (!isInDeathHole && transform.position.y < -0.02f && !glider.activeSelf)
+        if (!isInDeathHole && transform.position.y < -0.001f && !glider.activeSelf)
         {
             glider.SetActive(true);
         }
