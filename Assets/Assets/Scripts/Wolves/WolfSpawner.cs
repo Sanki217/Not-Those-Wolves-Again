@@ -1,46 +1,33 @@
 using System.Collections;
-using UnityEngine.UI;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WolfSpawner : MonoBehaviour
 {
-    public GameObject wolfPrefab;                 // The wolf prefab to spawn
-    public Collider spawnArea;                    // The area within which wolves should spawn
-    public float minSpawnInterval = 5f;           // Minimum time interval between spawns
-    public float maxSpawnInterval = 15f;          // Maximum time interval between spawns
-    private int maxWolves = 2;                    // Maximum number of wolves allowed
-    private int currentWolfCount = 0;
+    public GameObject wolfPrefab;                  // The wolf prefab to spawn
+    public Collider spawnArea;                     // The area (Collider) within which wolves should spawn
+    public float minSpawnInterval = 5f;            // Minimum time interval between spawns
+    public float maxSpawnInterval = 15f;           // Maximum time interval between spawns
+    public int maxWolves = 2;                      // Maximum number of wolves allowed at a time
 
-    [Header("UI Elements")]
-    public Image wolfAlertImage;
+    public int currentWolfCount = 0;
 
     private void Start()
     {
-        if (wolfAlertImage != null)
-        {
-            wolfAlertImage.enabled = false; // Hide the wolf alert image initially
-        }
-        StartCoroutine(SpawnWolvesContinuously());
+        StartCoroutine(SpawnWolvesRandomly());
     }
 
-    private IEnumerator SpawnWolvesContinuously()
+    private IEnumerator SpawnWolvesRandomly()
     {
         while (true)
         {
-            // Check if we need more wolves
+            float waitTime = Random.Range(minSpawnInterval, maxSpawnInterval);
+            yield return new WaitForSeconds(waitTime);
+
             if (currentWolfCount < maxWolves)
             {
                 SpawnWolf();
             }
-            else
-            {
-                // Toggle wolf alert image based on active wolf count
-                wolfAlertImage.enabled = currentWolfCount > 0;
-            }
-
-            // Wait for a random interval before the next check
-            float waitTime = Random.Range(minSpawnInterval, maxSpawnInterval);
-            yield return new WaitForSeconds(waitTime);
         }
     }
 
@@ -48,11 +35,14 @@ public class WolfSpawner : MonoBehaviour
     {
         Vector3 spawnPosition = GetRandomPointInSpawnArea();
         GameObject wolf = Instantiate(wolfPrefab, spawnPosition, Quaternion.identity);
-       // activeWolves.Add(wolf);
         currentWolfCount++;
 
-        // Handle decrementing wolf count on destruction
-        wolf.GetComponent<WolfBehavior>().OnWolfDeath += DecrementWolfCount;
+        // Attach event to decrement wolf count when a wolf dies
+        WolfBehavior wolfBehavior = wolf.GetComponent<WolfBehavior>();
+        if (wolfBehavior != null)
+        {
+            wolfBehavior.OnWolfDeath += DecrementWolfCount;
+        }
     }
 
     private Vector3 GetRandomPointInSpawnArea()
@@ -65,15 +55,8 @@ public class WolfSpawner : MonoBehaviour
         );
     }
 
-    private void DecrementWolfCount(GameObject wolf)
+    private void DecrementWolfCount()
     {
-       // if (activeWolves.Contains(wolf))
-       // {
-        //    activeWolves.Remove(wolf);
-            currentWolfCount--;
-      //  }
-
-        // Update the UI image based on remaining wolves
-        wolfAlertImage.enabled = currentWolfCount > 0;
+        currentWolfCount--;
     }
 }

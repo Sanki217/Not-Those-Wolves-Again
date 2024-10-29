@@ -76,7 +76,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 6cd713b72229ddd4abff65f397e4d32d,
         type: 3}
       propertyPath: m_Name
-      value: Werewolf
+      value: Wolf
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -119,6 +119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3
   detectionRadius: 85.1
+  deathThresholdY: -1.85
 --- !u!54 &1139870135047534319
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -143,9 +144,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 80
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &278434126925273530
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -165,7 +166,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.019664785, y: 0.02127977, z: 0.010225484}
+  m_Size: {x: 0.005, y: 0.02127977, z: 0.005}
   m_Center: {x: 0, y: 0.0009329035, z: 0.000861475}
 --- !u!65 &4578323903057523507
 BoxCollider:
@@ -186,5 +187,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.019664785, y: 0.02127977, z: 0.010225484}
+  m_Size: {x: 0.005, y: 0.02127977, z: 0.005}
   m_Center: {x: 0, y: 0.0009329035, z: 0.000861475}

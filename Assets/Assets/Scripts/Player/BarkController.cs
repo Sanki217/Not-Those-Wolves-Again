@@ -35,11 +35,11 @@ public class BarkController : MonoBehaviour
             if (collider.CompareTag("Farmer"))
             {
                 // Trigger farmer response if in range
-                FarmerBehavior farmer = collider.GetComponent<FarmerBehavior>();
-                if (farmer != null)
-                {
-                    farmer.OnBarkFromDog();
-                }
+             //   FarmerBehavior farmer = collider.GetComponent<FarmerBehavior>();
+             //   if (farmer != null)
+            //    {
+            //        farmer.OnBarkFromDog();
+             //   }
             }
             else if (collider.CompareTag("Sheep"))
             {
