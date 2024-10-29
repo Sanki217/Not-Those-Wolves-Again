@@ -58,7 +58,7 @@ public class WolfBehavior : MonoBehaviour
 
     private void FollowSheep()
     {
-        if (targetSheep != null)
+        if (targetSheep != null & transform.position.y > 0f)
         {
             // Calculate the direction to the sheep only on the X and Z axes
             Vector3 directionToSheep = (targetSheep.position - transform.position).normalized;

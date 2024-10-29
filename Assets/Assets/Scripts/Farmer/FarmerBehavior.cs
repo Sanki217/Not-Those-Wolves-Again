@@ -55,7 +55,7 @@ public class FarmerBehavior : MonoBehaviour
                     // Log shooting for debugging
                     Debug.Log("Farmer shoots a wolf!");
 
-                    gameManager.AddWolfKill();
+                    gameManager.WolfKilled();
 
                     // Destroy the wolf
                     wolf.KillWolf();
