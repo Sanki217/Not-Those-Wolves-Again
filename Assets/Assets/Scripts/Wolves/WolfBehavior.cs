@@ -79,7 +79,7 @@ public class WolfBehavior : MonoBehaviour
         }
     }
 
-    private void KillWolf()
+    public void KillWolf()
     {
         OnWolfDeath?.Invoke(); // Trigger the wolf death event
         Destroy(gameObject);
