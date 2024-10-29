@@ -209,4 +209,10 @@ public class GameManager : MonoBehaviour
         wolvesKilled++;
         Debug.Log("Wolf killed! Total wolves killed: " + wolvesKilled);
     }
+
+    public void AddWolfKill()
+    {
+        wolvesKilled++;               // Increment wolves killed count
+        Debug.Log("Wolf killed by farmer! Total wolves killed: " + wolvesKilled);
+    }
 }

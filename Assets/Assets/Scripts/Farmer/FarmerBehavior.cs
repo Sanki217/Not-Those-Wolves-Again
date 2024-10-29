@@ -15,7 +15,7 @@ public class FarmerBehavior : MonoBehaviour
     {
         // Find the WolfSpawner in the scene to check the current wolf count
         wolfSpawner = FindObjectOfType<WolfSpawner>();
-
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     public void OnBarkedAt()
@@ -54,6 +54,8 @@ public class FarmerBehavior : MonoBehaviour
 
                     // Log shooting for debugging
                     Debug.Log("Farmer shoots a wolf!");
+
+                    gameManager.AddWolfKill();
 
                     // Destroy the wolf
                     wolf.KillWolf();
