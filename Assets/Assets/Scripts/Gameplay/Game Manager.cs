@@ -5,19 +5,19 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     [Header("UI Elements")]
-    [SerializeField] private GameObject[] sheepIcons; 
-    [SerializeField] private Sprite sheepToCollectIcon;  
-    [SerializeField] private Sprite sheepCollectedIcon; 
-    [SerializeField] private Sprite sheepDeadIcon;  
-    [SerializeField] private GameObject gameOverPanel;  
-    [SerializeField] private GameObject winPanel;  
-    [SerializeField] private TextMeshProUGUI winPanelStats; 
+    [SerializeField] private GameObject[] sheepIcons;
+    [SerializeField] private Sprite sheepToCollectIcon;
+    [SerializeField] private Sprite sheepCollectedIcon;
+    [SerializeField] private Sprite sheepDeadIcon;
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private GameObject winPanel;
+    [SerializeField] private TextMeshProUGUI winPanelStats;
 
     [Header("Game Settings")]
-    [SerializeField] private GameObject player;  
-    [SerializeField] private Transform[] sheep;  
-    [SerializeField] public float deathZone =-5f;
-    private bool[] sheepAlive;  
+    [SerializeField] private GameObject player;
+    [SerializeField] private Transform[] sheep;
+    [SerializeField] public float deathZone = -5f;
+    private bool[] sheepAlive;
     private int pointsToWin;
     private int sheepInSafeZone = 0;
     private int sheepDead = 0;
@@ -31,18 +31,21 @@ public class GameManager : MonoBehaviour
     private int wolvesKilled = 0;
     private float timeElapsed = 0f;
 
+    [Header("Sound Effects")]
+    public AudioSource dogDeathSound;  // Zmienna dla dŸwiêku œmierci psa
+
     private void Start()
     {
         gameOverPanel.SetActive(false);
         winPanel.SetActive(false);
         Time.timeScale = 1f;
 
-        pointsToWin = sheep.Length;  
+        pointsToWin = sheep.Length;
 
-        sheepAlive = new bool[sheep.Length];  
+        sheepAlive = new bool[sheep.Length];
         for (int i = 0; i < sheep.Length; i++)
         {
-            sheepAlive[i] = true; 
+            sheepAlive[i] = true;
         }
 
         InitializeSheepIcons();
@@ -76,21 +79,21 @@ public class GameManager : MonoBehaviour
         {
             if (sheep[i] != null && sheep[i].position.y < deathZone && sheepAlive[i])
             {
-                Destroy(sheep[i].gameObject);  
-                SheepDied(i); 
+                Destroy(sheep[i].gameObject);
+                SheepDied(i);
             }
         }
     }
 
     public bool IsSheepAlive(int sheepIndex)
     {
-        return sheepAlive[sheepIndex];  
+        return sheepAlive[sheepIndex];
     }
 
     public void SheepInSafeZone(int sheepIndex)
     {
         if (!sheepAlive[sheepIndex])
-            return; 
+            return;
 
         sheepInSafeZone++;
         pointsToWin--;
@@ -110,7 +113,7 @@ public class GameManager : MonoBehaviour
     public void SheepDied(int sheepIndex)
     {
         sheepDead++;
-        pointsToWin--; 
+        pointsToWin--;
 
         sheepAlive[sheepIndex] = false;
 
@@ -128,6 +131,11 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Game Over! Player has died.");
         isGameOver = true;
+
+        if (dogDeathSound != null)
+        {
+            dogDeathSound.Play();  // Odtwórz dŸwiêk œmierci psa
+        }
 
         gameOverPanel.SetActive(true);
         Time.timeScale = 0f;
@@ -190,6 +198,4 @@ public class GameManager : MonoBehaviour
         wolvesKilled++;
         Debug.Log("Wolf killed! Total wolves killed: " + wolvesKilled);
     }
-
-   
 }
