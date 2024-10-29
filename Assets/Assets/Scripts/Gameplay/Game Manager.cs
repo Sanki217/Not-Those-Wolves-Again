@@ -5,22 +5,22 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     [Header("UI Elements")]
-    [SerializeField] private GameObject[] sheepIcons;  // Array of UI sheep icons
-    [SerializeField] private Sprite sheepToCollectIcon;  // Icon for sheep to collect
-    [SerializeField] private Sprite sheepCollectedIcon;  // Icon for sheep collected
-    [SerializeField] private Sprite sheepDeadIcon;  // Icon for sheep dead
-    [SerializeField] private GameObject gameOverPanel;  // Game Over UI Panel
-    [SerializeField] private GameObject winPanel;  // Win UI Panel
-    [SerializeField] private TextMeshProUGUI winPanelStats;  // Win panel stats
+    [SerializeField] private GameObject[] sheepIcons; 
+    [SerializeField] private Sprite sheepToCollectIcon;  
+    [SerializeField] private Sprite sheepCollectedIcon; 
+    [SerializeField] private Sprite sheepDeadIcon;  
+    [SerializeField] private GameObject gameOverPanel;  
+    [SerializeField] private GameObject winPanel;  
+    [SerializeField] private TextMeshProUGUI winPanelStats; 
 
     [Header("Game Settings")]
-    [SerializeField] private GameObject player;  // Reference to the player
-    [SerializeField] private Transform[] sheep;  // Array of all sheep
+    [SerializeField] private GameObject player;  
+    [SerializeField] private Transform[] sheep;  
     [SerializeField] public float deathZone =-5f;
-    private bool[] sheepAlive;  // Track whether each sheep is alive or dead
-    private int pointsToWin;  // Sheep needed to win
-    private int sheepInSafeZone = 0;  // Sheep captured
-    private int sheepDead = 0;  // Sheep that died
+    private bool[] sheepAlive;  
+    private int pointsToWin;
+    private int sheepInSafeZone = 0;
+    private int sheepDead = 0;
     private bool isGameOver = false;
     private bool isGameWon = false;
 
@@ -37,12 +37,12 @@ public class GameManager : MonoBehaviour
         winPanel.SetActive(false);
         Time.timeScale = 1f;
 
-        pointsToWin = sheep.Length;  // Total sheep in the level
+        pointsToWin = sheep.Length;  
 
-        sheepAlive = new bool[sheep.Length];  // Initialize array to track sheep alive status
+        sheepAlive = new bool[sheep.Length];  
         for (int i = 0; i < sheep.Length; i++)
         {
-            sheepAlive[i] = true;  // Assume all sheep are alive at the start
+            sheepAlive[i] = true; 
         }
 
         InitializeSheepIcons();
@@ -57,7 +57,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Initialize sheep icons for display
     private void InitializeSheepIcons()
     {
         for (int i = 0; i < sheep.Length; i++)
@@ -66,7 +65,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Check if the player or sheep have fallen below Y = -2
     private void CheckFallConditions()
     {
         if (player.transform.position.y < deathZone)
@@ -78,34 +76,29 @@ public class GameManager : MonoBehaviour
         {
             if (sheep[i] != null && sheep[i].position.y < deathZone && sheepAlive[i])
             {
-                Destroy(sheep[i].gameObject);  // Sheep dies
-                SheepDied(i);  // Call SheepDied when a sheep dies
+                Destroy(sheep[i].gameObject);  
+                SheepDied(i); 
             }
         }
     }
 
-    // Check if a sheep is still alive
     public bool IsSheepAlive(int sheepIndex)
     {
-        return sheepAlive[sheepIndex];  // Return true if the sheep is alive, false otherwise
+        return sheepAlive[sheepIndex];  
     }
 
-    // Called when a sheep enters the safe zone
     public void SheepInSafeZone(int sheepIndex)
     {
         if (!sheepAlive[sheepIndex])
-            return;  // Ignore if the sheep is already dead or in the safe zone
+            return; 
 
         sheepInSafeZone++;
         pointsToWin--;
 
-        // Mark the sheep as no longer alive since it's in the safe zone
         sheepAlive[sheepIndex] = false;
 
-        // Update the sheep icon to "Sheep Collected"
         sheepIcons[sheepIndex].GetComponent<UnityEngine.UI.Image>().sprite = sheepCollectedIcon;
 
-        // Check if all sheep (collected or dead) are accounted for
         if (sheepInSafeZone + sheepDead >= sheep.Length)
         {
             WinGame();
@@ -114,19 +107,15 @@ public class GameManager : MonoBehaviour
         Debug.Log("Sheep in Safe Zone: " + sheepInSafeZone);
     }
 
-    // Called when a sheep dies
     public void SheepDied(int sheepIndex)
     {
         sheepDead++;
-        pointsToWin--;  // Decrease the number of sheep required to win
+        pointsToWin--; 
 
-        // Mark the sheep as no longer alive
         sheepAlive[sheepIndex] = false;
 
-        // Update the sheep icon to "Sheep Dead"
         sheepIcons[sheepIndex].GetComponent<UnityEngine.UI.Image>().sprite = sheepDeadIcon;
 
-        // Check if all sheep (collected or dead) are accounted for
         if (sheepInSafeZone + sheepDead >= sheep.Length)
         {
             WinGame();
@@ -135,7 +124,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("Sheep died! Total Dead: " + sheepDead);
     }
 
-    // Handle Game Over logic
     public void GameOver()
     {
         Debug.Log("Game Over! Player has died.");
@@ -145,14 +133,12 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
     }
 
-    // Handle Win condition
     private void WinGame()
     {
         isGameWon = true;
         Time.timeScale = 0f;
         Debug.Log("You Win! All sheep collected or accounted for.");
 
-        // Calculate final score
         int remainingPoints = Mathf.Max(0, startPoints - (int)(timeElapsed * timePenaltyPerSecond));
         int finalScore = (remainingPoints + wolvesKilled * pointsPerWolf) * sheepInSafeZone;
 
@@ -165,7 +151,6 @@ public class GameManager : MonoBehaviour
         SaveHighScore(finalScore);
     }
 
-    // Save High Score
     private void SaveHighScore(int finalScore)
     {
         string levelKey = SceneManager.GetActiveScene().name + "_HighScore";
@@ -182,37 +167,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Restart the current level
     public void RestartLevel()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    // Go to Level Selector
     public void GoToLevelSelector()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("LevelSelectorScene");
     }
 
-    // Go to Main Menu
     public void GoToMainMenu()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenuScene");
     }
 
-    // Method to track wolf kills
     public void WolfKilled()
     {
         wolvesKilled++;
         Debug.Log("Wolf killed! Total wolves killed: " + wolvesKilled);
     }
 
-    //public void AddWolfKill()
-    //{
-    //    wolvesKilled++;               // Increment wolves killed count
-    //    Debug.Log("Wolf killed by farmer! Total wolves killed: " + wolvesKilled);
-   // }
+   
 }

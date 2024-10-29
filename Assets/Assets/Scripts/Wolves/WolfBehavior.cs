@@ -43,8 +43,14 @@ public class WolfBehavior : MonoBehaviour
         float closestDistance = detectionRadius;
         Transform closestSheep = null;
 
+        // Loop through all sheep and check if they are alive in the game
         foreach (SheepMovement sheep in FindObjectsOfType<SheepMovement>())
         {
+            int sheepIndex = sheep.sheepIndex;
+
+            // Skip sheep that are in the safe zone or marked as inactive
+            if (!gameManager.IsSheepAlive(sheepIndex)) continue;
+
             float distanceToSheep = Vector3.Distance(transform.position, sheep.transform.position);
             if (distanceToSheep < closestDistance)
             {
@@ -58,7 +64,7 @@ public class WolfBehavior : MonoBehaviour
 
     private void FollowSheep()
     {
-        if (targetSheep != null & transform.position.y > 0f)
+        if (targetSheep != null && transform.position.y > 0f)
         {
             // Calculate the direction to the sheep only on the X and Z axes
             Vector3 directionToSheep = (targetSheep.position - transform.position).normalized;
