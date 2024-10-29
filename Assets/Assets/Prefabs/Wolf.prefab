@@ -119,7 +119,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3
   detectionRadius: 85.1
-  deathThresholdY: -1.85
 --- !u!54 &1139870135047534319
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -187,5 +186,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.005, y: 0.02127977, z: 0.005}
+  m_Size: {x: 0.008, y: 0.02127977, z: 0.008}
   m_Center: {x: 0, y: 0.0009329035, z: 0.000861475}
