@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Sound Effects")]
     public AudioSource dogDeathSound;  // Zmienna dla dŸwiêku œmierci psa
+    public AudioSource sheepSafeSound; // Dodaj Ÿród³o dŸwiêku dla owcy
 
     private void Start()
     {
@@ -101,6 +102,12 @@ public class GameManager : MonoBehaviour
         sheepAlive[sheepIndex] = false;
 
         sheepIcons[sheepIndex].GetComponent<UnityEngine.UI.Image>().sprite = sheepCollectedIcon;
+
+        // Odtwórz dŸwiêk dla ka¿dej owcy wchodz¹cej do zagrody
+        if (sheepSafeSound != null)
+        {
+            sheepSafeSound.Play();
+        }
 
         if (sheepInSafeZone + sheepDead >= sheep.Length)
         {
