@@ -55,10 +55,11 @@ public class FarmerBehavior : MonoBehaviour
                     // Log shooting for debugging
                     Debug.Log("Farmer shoots a wolf!");
 
-                    gameManager.WolfKilled();
+                    
 
                     // Destroy the wolf
                     wolf.KillWolf();
+                    gameManager.WolfKilled();
 
                     // Wait for the delay before the next shot
                     yield return new WaitForSeconds(shotDelay);
