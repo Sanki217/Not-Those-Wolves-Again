@@ -10,12 +10,18 @@ public class WolfBehavior : MonoBehaviour
     private Transform targetSheep;
     private Rigidbody rb;
     private GameManager gameManager;
+    private Animator animator;                   // Animator component for handling animations
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ; // Restrict rotation to Y-axis
         gameManager = FindObjectOfType<GameManager>();
+        animator = GetComponent<Animator>();     // Get the Animator component
+
+        // Play the walking animation directly when the wolf spawns
+        animator.Play("Wolf_Walk");
+
         FindNearestSheep(); // Find the nearest sheep on spawn
     }
 
@@ -36,6 +42,9 @@ public class WolfBehavior : MonoBehaviour
             Destroy(gameObject);
             gameManager.WolfKilled();
         }
+
+        // Optional: if you want to ensure the animation is always played
+        // animator.Play("Wolf_Walk");
     }
 
     private void FindNearestSheep()
