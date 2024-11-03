@@ -15,13 +15,14 @@ public class PlayerMovement : MonoBehaviour
     private bool isFalling = false;
     private Rigidbody rb;
     private Vector3 currentVelocity;
-    private Animator animator; 
+    public Animator animator;
+   
 
     private void Start()
     {
         
         rb = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>(); 
+        animator = GetComponentInChildren<Animator>(); 
 
         rb.freezeRotation = true; 
     }
@@ -38,40 +39,54 @@ public class PlayerMovement : MonoBehaviour
         }
 
        
-        float speed = new Vector3(horizontalInput, 0, verticalInput).magnitude * maxSpeed;
-        animator.SetFloat("Speed", speed); 
+     
 
-       
-        if (speed > 0.1f && !footstepsAudio.isPlaying)
-        {
-            footstepsAudio.Play();
-        }
-        else if (speed <= 0.1f && footstepsAudio.isPlaying)
-        {
-            footstepsAudio.Stop();
-        }
+        float movementMagnitude = new Vector3(horizontalInput, 0, verticalInput).magnitude;
+        animator.SetFloat("Speed", movementMagnitude); // Set speed in Animator to control animations
+
+
     }
 
     private void FixedUpdate()
     {
-        
-        Vector3 targetVelocity = new Vector3(horizontalInput * maxSpeed, rb.velocity.y, verticalInput * maxSpeed);
-        rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref currentVelocity, smoothTime);
 
-        
-        if (targetVelocity.x != 0 || targetVelocity.z != 0)
+        if (!isFalling)
         {
-            Vector3 direction = new Vector3(targetVelocity.x, 0, targetVelocity.z);
-            transform.forward = direction;
+
+
+
+            Vector3 targetDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
+
+            if (targetDirection.magnitude > 0.1f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+            }
+
+            Vector3 targetVelocity = targetDirection * maxSpeed;
+
+            rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref currentVelocity, smoothTime);
+
+            if (targetVelocity.magnitude > 0.1f && !footstepsAudio.isPlaying)
+            {
+                footstepsAudio.Play();
+            }
+            else if (targetVelocity.magnitude <= 0.1f && footstepsAudio.isPlaying)
+            {
+                footstepsAudio.Stop();
+            }
+
         }
     }
 
     private void StartFalling()
     {
-        if (!isFalling)
+        if (footstepsAudio.isPlaying)
         {
-            isFalling = true;
-            animator.SetTrigger("Fall"); 
+            footstepsAudio.Stop();
         }
+
+        isFalling = true;
     }
+
 }
