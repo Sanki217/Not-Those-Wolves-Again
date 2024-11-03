@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float maxSpeed = 5f;
-    public float smoothTime = 0.1f; // Smooth acceleration/deceleration
+    public float smoothTime = 0.1f; 
     public DynamicJoystick joystick;
     public AudioSource footstepsAudio;
 
@@ -15,17 +15,20 @@ public class PlayerMovement : MonoBehaviour
     private bool isFalling = false;
     private Rigidbody rb;
     private Vector3 currentVelocity;
+    private Animator animator; 
 
     private void Start()
     {
-        // Get the Rigidbody component and lock the X and Z rotation to prevent rolling
+        
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true; // Stops rotation altogether, but we'll control Y rotation manually
+        animator = GetComponent<Animator>(); 
+
+        rb.freezeRotation = true; 
     }
 
     private void Update()
     {
-        // Get the horizontal and vertical input from the joystick
+        
         horizontalInput = joystick.Horizontal;
         verticalInput = joystick.Vertical;
 
@@ -34,54 +37,41 @@ public class PlayerMovement : MonoBehaviour
             StartFalling();
         }
 
-    }
-    private void FixedUpdate()
-    {
+       
+        float speed = new Vector3(horizontalInput, 0, verticalInput).magnitude * maxSpeed;
+        animator.SetFloat("Speed", speed); 
 
-        if (!isFalling)
+       
+        if (speed > 0.1f && !footstepsAudio.isPlaying)
         {
-
-
-
-            // Calculate the movement direction (on XZ plane) and normalize it
-            Vector3 targetDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
-
-            // If there is any movement, face the direction of movement
-            if (targetDirection.magnitude > 0.1f) // Only rotate if there is enough input
-            {
-                // Rotate the player to face the target direction (Y axis only)
-                Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f); // Smooth rotation
-            }
-
-            // Calculate the target velocity
-            Vector3 targetVelocity = targetDirection * maxSpeed;
-
-            // Smoothly change the velocity using SmoothDamp
-            rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref currentVelocity, smoothTime);
-
-            // Odtwarzanie d�wi�ku krok�w, gdy pies si� porusza
-            if (targetVelocity.magnitude > 0.1f && !footstepsAudio.isPlaying)
-            {
-                footstepsAudio.Play();
-            }
-            else if (targetVelocity.magnitude <= 0.1f && footstepsAudio.isPlaying)
-            {
-                footstepsAudio.Stop();
-            }
-
+            footstepsAudio.Play();
         }
-    }
-    private void StartFalling()
-    {
-        // Stop footsteps sound when falling
-        if (footstepsAudio.isPlaying)
+        else if (speed <= 0.1f && footstepsAudio.isPlaying)
         {
             footstepsAudio.Stop();
         }
-
-        // Set the falling state and allow gravity to control Y movement
-        isFalling = true;
     }
 
+    private void FixedUpdate()
+    {
+        
+        Vector3 targetVelocity = new Vector3(horizontalInput * maxSpeed, rb.velocity.y, verticalInput * maxSpeed);
+        rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref currentVelocity, smoothTime);
+
+        
+        if (targetVelocity.x != 0 || targetVelocity.z != 0)
+        {
+            Vector3 direction = new Vector3(targetVelocity.x, 0, targetVelocity.z);
+            transform.forward = direction;
+        }
+    }
+
+    private void StartFalling()
+    {
+        if (!isFalling)
+        {
+            isFalling = true;
+            animator.SetTrigger("Fall"); 
+        }
+    }
 }
