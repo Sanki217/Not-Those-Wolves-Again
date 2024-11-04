@@ -416,7 +416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sheepIndex: 2
-  dogTransform: {fileID: 0}
+  dogTransform: {fileID: 1560329455}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -2246,7 +2246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sheepIndex: 1
-  dogTransform: {fileID: 0}
+  dogTransform: {fileID: 1560329455}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -2405,7 +2405,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sheepIndex: 3
-  dogTransform: {fileID: 0}
+  dogTransform: {fileID: 1560329455}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -4990,7 +4990,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sheepIndex: 0
-  dogTransform: {fileID: 0}
+  dogTransform: {fileID: 1560329455}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -9125,7 +9125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sheepIndex: 4
-  dogTransform: {fileID: 0}
+  dogTransform: {fileID: 1560329455}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
