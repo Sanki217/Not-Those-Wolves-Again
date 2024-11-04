@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class BarkController : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class BarkController : MonoBehaviour
     public float barkDistanceThreshold = 10f;  // Distance beyond which sheep are unaffected
     public float verticalBarkForce = 2f;       // Vertical force applied to the sheep when barking
     public AudioSource barkAudio;
+   [SerializeField] public VisualEffect barkVFX;
 
     private Transform dogTransform;
 
@@ -25,6 +27,8 @@ public class BarkController : MonoBehaviour
             barkAudio.Play();
             Debug.Log("Woof! The dog barked!");
         }
+
+            barkVFX.Play();      
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, barkRadius, interactableLayer);
 
