@@ -3,7 +3,12 @@ guid: 385c5b59e27dd8d4ca45ad20e94e1300
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DogMat
+    second: {fileID: 2100000, guid: c502efa178a043249a1e79172e50154a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -177,7 +182,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.012999999
+    globalScale: 1.3
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

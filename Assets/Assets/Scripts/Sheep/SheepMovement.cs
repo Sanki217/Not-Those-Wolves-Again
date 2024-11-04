@@ -33,12 +33,14 @@ public class SheepMovement : MonoBehaviour
 
     private Rigidbody rb;
     private float lastBarkedTime;       
-    private bool isWandering = false;   
+    private bool isWandering = false;
+
+    private Animator sheepAnimator;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-
+        sheepAnimator = GetComponentInChildren<Animator>();
        
         float randomInitialDelay = Random.Range(2f, maxMoveInterval);
         StartCoroutine(StartWanderingAfterDelay(randomInitialDelay));
@@ -49,9 +51,12 @@ public class SheepMovement : MonoBehaviour
         if (!isFalling)  
         {
             DrawLineToDog(); 
-            isGrounded = IsGrounded(); 
+            isGrounded = IsGrounded();
 
-            
+            bool isMoving = rb.velocity.magnitude > 0.1f;
+            sheepAnimator.SetBool("IsMoving", isMoving);
+
+
             if (rb.velocity.magnitude > 0.1f)
             {
                 Vector3 direction = rb.velocity.normalized;
