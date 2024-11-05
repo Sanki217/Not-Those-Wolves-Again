@@ -1840,7 +1840,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 573979514}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: GoToLevelSelector
         m_Mode: 1
@@ -7289,7 +7289,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 573979514}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: RestartLevel
         m_Mode: 1
@@ -8248,7 +8248,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 573979514}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: GoToMainMenu
         m_Mode: 1
