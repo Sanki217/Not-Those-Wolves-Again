@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections;
 
 public class WolfBehavior : MonoBehaviour
 {
@@ -94,11 +95,25 @@ public class WolfBehavior : MonoBehaviour
         }
     }
 
-    public void KillWolf()
-    {
-        OnWolfDeath?.Invoke(); // Trigger the wolf death event
-        Destroy(gameObject);
-    }
+  public void KillWolf()
+{
+    OnWolfDeath?.Invoke(); // Trigger the wolf death event
+    
+    // Set the death animation
+    animator.SetBool("isDead", true); // Ustaw parametr isDead na true
+    
+    // Opcjonalne opóŸnienie, aby animacja mog³a siê odtworzyæ przed zniszczeniem obiektu
+    StartCoroutine(DestroyAfterDeathAnimation());
+}
+
+// Coroutine to destroy the wolf object after the death animation plays
+private IEnumerator DestroyAfterDeathAnimation()
+{
+    // Zak³adamy, ¿e animacja œmierci trwa 2 sekundy; dostosuj wed³ug potrzeb
+    yield return new WaitForSeconds(2f);
+    
+    Destroy(gameObject);
+}
 
     private void OnTriggerEnter(Collider other)
     {
