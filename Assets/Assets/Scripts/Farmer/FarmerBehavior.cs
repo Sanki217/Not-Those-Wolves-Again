@@ -3,19 +3,24 @@ using UnityEngine;
 
 public class FarmerBehavior : MonoBehaviour
 {
-    public float shotDelay = 1f;  // Delay between each shot in seconds
-    public GameObject shotVFX;    // Reference to the VFX prefab or effect for the shot
-    public AudioSource shotAudio; // AudioSource for the shooting sound
+    public float shotDelay = 1f;  // Delay between each shot
+    public GameObject shotVFX;  // VFX prefab for the shot
+    public AudioSource shotAudio; // Audio source for shooting sound
+    public Transform shootingPoint;  // Reference to the empty GameObject for VFX origin
+    public Animator animator;     // Animator for farmer animations
 
     private GameManager gameManager;
-
     private WolfSpawner wolfSpawner;
 
     private void Start()
     {
-        // Find the WolfSpawner in the scene to check the current wolf count
         wolfSpawner = FindObjectOfType<WolfSpawner>();
         gameManager = FindObjectOfType<GameManager>();
+
+        if (animator != null)
+        {
+            animator.Play("Idle"); // Set default animation to Idle
+        }
     }
 
     public void OnBarkedAt()
@@ -35,27 +40,33 @@ public class FarmerBehavior : MonoBehaviour
     {
         while (wolfSpawner.currentWolfCount > 0)
         {
-            // Get all active wolves in the scene
             WolfBehavior[] wolves = FindObjectsOfType<WolfBehavior>();
 
             foreach (WolfBehavior wolf in wolves)
             {
                 if (wolf != null)
                 {
-                    // Trigger VFX and sound for each shot
-                    if (shotVFX != null)
+                    // Rotate the farmer towards the current wolf
+                    RotateTowardWolf(wolf.transform.position);
+
+                    // Play shoot animation once
+                    if (animator != null)
                     {
-                        Instantiate(shotVFX, wolf.transform.position, Quaternion.identity);
+                        animator.SetTrigger("ShootTrigger");
+
+                    }
+
+                    // Trigger VFX and sound at gun bone position
+                    if (shotVFX != null && shootingPoint != null)
+                    {
+                        Instantiate(shotVFX, shootingPoint.position, shootingPoint.rotation);
                     }
                     if (shotAudio != null)
                     {
                         shotAudio.Play();
                     }
 
-                    // Log shooting for debugging
                     Debug.Log("Farmer shoots a wolf!");
-
-                    
 
                     // Destroy the wolf
                     wolf.KillWolf();
@@ -67,4 +78,16 @@ public class FarmerBehavior : MonoBehaviour
             }
         }
     }
+
+    private void RotateTowardWolf(Vector3 wolfPosition)
+    {
+        // Calculate direction to the wolf on the XZ plane
+        Vector3 directionToWolf = (wolfPosition - transform.position).normalized;
+        directionToWolf.y = 0;  // Ensure rotation only happens on the Y-axis
+
+        // Calculate the target rotation
+        Quaternion targetRotation = Quaternion.LookRotation(directionToWolf);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10000f);  // Smooth rotation
+    }
+
 }
