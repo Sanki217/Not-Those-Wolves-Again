@@ -7,27 +7,31 @@ public class WolfBehavior : MonoBehaviour
     public float moveSpeed = 3f;                 // Speed at which the wolf follows the sheep
     public float detectionRadius = 20f;          // Maximum distance to detect sheep
     public event Action OnWolfDeath;             // Event to notify when a wolf dies
+    public float deathAnimationDuration = 1.5f;
 
     private Transform targetSheep;
     private Rigidbody rb;
     private GameManager gameManager;
-    private Animator animator;                   // Animator component for handling animations
+    private Animator animator;
+    private bool isDying = false;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ; // Restrict rotation to Y-axis
         gameManager = FindObjectOfType<GameManager>();
-        animator = GetComponent<Animator>();     // Get the Animator component
+        animator = GetComponentInChildren<Animator>();     // Get the Animator component
 
         // Play the walking animation directly when the wolf spawns
-        animator.Play("Wolf_Walk");
+        //animator.Play("Wolf_Walk");
 
         FindNearestSheep(); // Find the nearest sheep on spawn
     }
 
     private void Update()
     {
+        if (isDying) return;
+
         if (targetSheep == null)
         {
             FindNearestSheep();
@@ -97,20 +101,27 @@ public class WolfBehavior : MonoBehaviour
 
   public void KillWolf()
 {
-    OnWolfDeath?.Invoke(); // Trigger the wolf death event
-    
-    // Set the death animation
-    animator.SetBool("isDead", true); // Ustaw parametr isDead na true
-    
-    // Opcjonalne opóŸnienie, aby animacja mog³a siê odtworzyæ przed zniszczeniem obiektu
-    StartCoroutine(DestroyAfterDeathAnimation());
-}
+        if (isDying) return;
 
-// Coroutine to destroy the wolf object after the death animation plays
+        isDying = true;
+
+        OnWolfDeath?.Invoke();
+
+        animator.SetTrigger("DeathTrigger");
+        animator.SetBool("IsDead", true);
+
+        
+        rb.velocity = Vector3.zero;
+
+        StartCoroutine(DestroyAfterDeathAnimation());
+      
+    }
+
+
 private IEnumerator DestroyAfterDeathAnimation()
 {
-    // Zak³adamy, ¿e animacja œmierci trwa 2 sekundy; dostosuj wed³ug potrzeb
-    yield return new WaitForSeconds(2f);
+    
+    yield return new WaitForSeconds(deathAnimationDuration);
     
     Destroy(gameObject);
 }

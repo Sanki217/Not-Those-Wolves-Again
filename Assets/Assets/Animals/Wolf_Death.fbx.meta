@@ -33,7 +33,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: rig|Wolf_Death
+      name: Death
       takeName: rig|Wolf_Death
       internalID: 1330672882380508412
       firstFrame: 0

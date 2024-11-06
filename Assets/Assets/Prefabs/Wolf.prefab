@@ -110,14 +110,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 4578323903057523507}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6cd713b72229ddd4abff65f397e4d32d,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7307537557640413015}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6cd713b72229ddd4abff65f397e4d32d,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2780178385388342443}
   m_SourcePrefab: {fileID: 100100000, guid: 6cd713b72229ddd4abff65f397e4d32d, type: 3}
 --- !u!1 &2552762000064989696 stripped
 GameObject:
@@ -139,6 +131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3
   detectionRadius: 85.1
+  deathAnimationDuration: 1.5
 --- !u!54 &1139870135047534319
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -208,69 +201,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.008, y: 0.02127977, z: 0.008}
   m_Center: {x: 0, y: 0.0009329035, z: 0.000861475}
---- !u!95 &7307537557640413015
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2552762000064989696}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 169db9eaf726c914f80a7c5a3848ff25, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!23 &2780178385388342443
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2552762000064989696}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!4 &2893258397917712570 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6cd713b72229ddd4abff65f397e4d32d,
