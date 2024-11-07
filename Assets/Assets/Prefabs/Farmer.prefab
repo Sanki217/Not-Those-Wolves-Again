@@ -26,13 +26,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1249403090294858471}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7, y: -0.6, z: 76}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.21061604, y: 0.28022102, z: 0.743685, w: 0.5692537}
+  m_LocalPosition: {x: -0.697, y: 0.86, z: 1.037}
+  m_LocalScale: {x: 1.9192, y: 1.9192, z: 1.9192}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1831275682560029194}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -10.195, y: 39.974, z: 101.419}
 --- !u!2083052967 &2611518483572420483
 VisualEffect:
   m_ObjectHideFlags: 0
@@ -266,7 +266,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotDelay: 0.5
-  shotVFX: {fileID: 1249403090294858471}
+  GunshotVFX: {fileID: 2611518483572420483}
   shotAudio: {fileID: 4412788410435689029}
   shootingPoint: {fileID: 8540165154347200064}
   animator: {fileID: 5283313970204921857}

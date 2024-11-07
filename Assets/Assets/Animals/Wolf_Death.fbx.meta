@@ -3,7 +3,12 @@ guid: fc4fe6d0169eed34b96254978b8eaed4
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WerewolfMat
+    second: {fileID: 2100000, guid: dc48dd67ef130f24485f3d7869d90495, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

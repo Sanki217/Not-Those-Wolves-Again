@@ -1,10 +1,12 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.VFX;
+
 
 public class FarmerBehavior : MonoBehaviour
 {
     public float shotDelay = 1f;  // Delay between each shot
-    public GameObject shotVFX;  // VFX prefab for the shot
+    public VisualEffect GunshotVFX;  // VFX prefab for the shot
     public AudioSource shotAudio; // Audio source for shooting sound
     public Transform shootingPoint;  // Reference to the empty GameObject for VFX origin
     public Animator animator;     // Animator for farmer animations
@@ -57,10 +59,8 @@ public class FarmerBehavior : MonoBehaviour
                     }
 
                     // Trigger VFX and sound at gun bone position
-                    if (shotVFX != null && shootingPoint != null)
-                    {
-                        Instantiate(shotVFX, shootingPoint.position, shootingPoint.rotation);
-                    }
+                    GunshotVFX.Play();
+
                     if (shotAudio != null)
                     {
                         shotAudio.Play();
@@ -70,7 +70,7 @@ public class FarmerBehavior : MonoBehaviour
 
                     // Destroy the wolf
                     wolf.KillWolf();
-                    wolfSpawner.currentWolfCount -= 1;
+                    //wolfSpawner.currentWolfCount -= 1;
                     gameManager.WolfKilled();
 
                     // Wait for the delay before the next shot
