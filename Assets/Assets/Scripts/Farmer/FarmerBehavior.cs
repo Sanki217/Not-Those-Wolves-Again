@@ -70,12 +70,14 @@ public class FarmerBehavior : MonoBehaviour
 
                     // Destroy the wolf
                     wolf.KillWolf();
+                    wolfSpawner.currentWolfCount -= 1;
                     gameManager.WolfKilled();
 
                     // Wait for the delay before the next shot
                     yield return new WaitForSeconds(shotDelay);
                 }
             }
+
         }
     }
 
